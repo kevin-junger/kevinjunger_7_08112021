@@ -6,3 +6,10 @@
   -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
 }
+.fine-search {
+  max-width: 50%;
+}
+.fine-search-input::placeholder {
+  color: #ffffff;
+  opacity: 50%;
+}
