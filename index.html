@@ -53,8 +53,25 @@
         <div class="col-auto p-2 text-white bg-danger rounded">Ustensile <i class="far fa-times-circle"></i></div>
       </section>
       <section class="row mb-4 mx-1">
-        <div class="col-auto p-3 me-3 text-white bg-primary rounded">
-          Ingrédients
+        <div class="col-auto p-3 me-3 text-white bg-primary rounded form-floating">
+          <label for="ingredient-input">Ingrédients</label>
+          <input class="bg-transparent border-0 text-white" type="text" name="ingredient-input" id="ingredient-input" placeholder="Rechercher un ingrédient...">
+          <div class="mt-3 visually-hidden ingredient-list">
+            <ul class="d-flex flex-wrap list-unstyled">
+              <li class="w-50">Test</li>
+              <li class="w-50">Test</li>
+              <li class="w-50">Test</li>
+              <li class="w-50">Test</li>
+              <li class="w-50">Test</li>
+              <li class="w-50">Test</li>
+              <li class="w-50">Test</li>
+              <li class="w-50">Test</li>
+              <li class="w-50">Test</li>
+              <li class="w-50">Test</li>
+              <li class="w-50">Test</li>
+              <li class="w-50">Test</li>
+            </ul>
+          </div>
         </div>
         <div class="col-auto p-3 me-3 text-white bg-success rounded">
           Appareils
@@ -76,23 +93,13 @@
                   >
                 </div>
                 <div class="row">
-                  <ul class="col-sm-6 list-inline">
-                    <li class="list-inline-item">
-                      <strong>Lait de coco</strong> : 400 ml
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Jus de citron</strong> : 2
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Crème de coco</strong> : 4 cuillères
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Sucre</strong> : 20 g
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Glaçons</strong> : 2
-                    </li>
-                  </ul>
+                  <p class="col-sm-6">
+                    <strong>Lait de coco</strong> : 400 ml<br />
+                    <strong>Jus de citron</strong> : 2<br />
+                    <strong>Crème de coco</strong> : 4 cuillères<br />
+                    <strong>Sucre</strong> : 20 g<br />
+                    <strong>Glaçons</strong> : 2<br />
+                  </p>
                   <p class="col-sm-6">
                     Mettre les glaçons à votre goût dans le blender, ajouter le lait, la crème de coco, le jus de 2 citrons et le sucre. Mixer jusqu'à avoir la consistence désirée.
                   </p>
@@ -115,26 +122,14 @@
                   >
                 </div>
                 <div class="row">
-                  <ul class="col-sm-6 list-inline">
-                    <li class="list-inline-item">
-                      <strong>Thon rouge (ou blanc)</strong> : 200 g
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Concombre</strong> : 1
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Tomate</strong> : 2
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Carotte</strong> : 1
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Citron vert</strong> : 5
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Lait de coco</strong> : 100 ml
-                    </li>
-                  </ul>
+                  <p class="col-sm-6">
+                    <strong>Thon rouge (ou blanc)</strong> : 200 g<br />
+                    <strong>Concombre</strong> : 1<br />
+                    <strong>Tomate</strong> : 2<br />
+                    <strong>Carotte</strong> : 1<br />
+                    <strong>Citron vert</strong> : 5<br />
+                    <strong>Lait de coco</strong> : 100 ml
+                  </p>
                   <p class="col-sm-6">
                     Découper le thon en dés, mettre dans un plat et recouvrir de jus de citron vert (mieux vaut prendre un plat large et peu profond). Laisser reposer au réfrigérateur au moins 2 heures. Si possible faites-le le soir pour le lendemain. Après avoir laissé mariner le poisson, coupez le concombre en fines rondelles sans la peau et les tomates en prenant soin de retirer les pépins. Rayer la carotte. Ajouter les légumes au poissons avec le citron cette fois ci dans un daladier. Ajouter le lait de coco. Pour ajouter un peu plus de saveur vous pouver ajouter 1 à 2 cuillères à soupe de crème de coco.
                   </p>
@@ -157,26 +152,14 @@
                   >
                 </div>
                 <div class="row">
-                  <ul class="col-sm-6 list-inline">
-                    <li class="list-inline-item">
-                      <strong>Poulet</strong> : 1
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Lait de coco</strong> : 400 ml
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Coulis de tomate</strong> : 25 cl
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Oignon</strong> : 1
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Poivron rouge</strong> : 1
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Huile d'olive</strong> : 1 cuillère à soupe
-                    </li>
-                  </ul>
+                  <p class="col-sm-6">
+                    <strong>Poulet</strong> : 1<br />
+                    <strong>Lait de coco</strong> : 400 ml<br />
+                    <strong>Coulis de tomate</strong> : 25 cl<br />
+                    <strong>Oignon</strong> : 1<br />
+                    <strong>Poivron rouge</strong> : 1<br />
+                    <strong>Huile d'olive</strong> : 1 cuillère à soupe
+                  </p>
                   <p class="col-sm-6">
                     Découper le poulet en morceaux, le faire dorer dans une cocotte avec de l'huile d'olive. Salez et poivrez. Une fois doré, laisser cuire en ajoutant de l'eau. Au bout de 30 minutes, ajouter le coulis de tomate, le lait de coco ainsi que le poivron et l'oignon découpés en morceaux. Laisser cuisiner 30 minutes de plus. Servir avec du riz.
                   </p>
@@ -197,23 +180,13 @@
                   >
                 </div>
                 <div class="row">
-                  <ul class="col-sm-6 list-inline">
-                    <li class="list-inline-item">
-                      <strong>Lait de coco</strong> : 400 ml
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Jus de citron</strong> : 2
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Crème de coco</strong> : 4 cuillères
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Sucre</strong> : 20 g
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Glaçons</strong> : 2
-                    </li>
-                  </ul>
+                  <p class="col-sm-6">
+                    <strong>Lait de coco</strong> : 400 ml<br />
+                    <strong>Jus de citron</strong> : 2<br />
+                    <strong>Crème de coco</strong> : 4 cuillères<br />
+                    <strong>Sucre</strong> : 20 g<br />
+                    <strong>Glaçons</strong> : 2<br />
+                  </p>
                   <p class="col-sm-6">
                     Mettre les glaçons à votre goût dans le blender, ajouter le lait, la crème de coco, le jus de 2 citrons et le sucre. Mixer jusqu'à avoir la consistence désirée.
                   </p>
@@ -236,26 +209,14 @@
                   >
                 </div>
                 <div class="row">
-                  <ul class="col-sm-6 list-inline">
-                    <li class="list-inline-item">
-                      <strong>Thon rouge (ou blanc)</strong> : 200 g
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Concombre</strong> : 1
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Tomate</strong> : 2
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Carotte</strong> : 1
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Citron vert</strong> : 5
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Lait de coco</strong> : 100 ml
-                    </li>
-                  </ul>
+                  <p class="col-sm-6">
+                    <strong>Thon rouge (ou blanc)</strong> : 200 g<br />
+                    <strong>Concombre</strong> : 1<br />
+                    <strong>Tomate</strong> : 2<br />
+                    <strong>Carotte</strong> : 1<br />
+                    <strong>Citron vert</strong> : 5<br />
+                    <strong>Lait de coco</strong> : 100 ml
+                  </p>
                   <p class="col-sm-6">
                     Découper le thon en dés, mettre dans un plat et recouvrir de jus de citron vert (mieux vaut prendre un plat large et peu profond). Laisser reposer au réfrigérateur au moins 2 heures. Si possible faites-le le soir pour le lendemain. Après avoir laissé mariner le poisson, coupez le concombre en fines rondelles sans la peau et les tomates en prenant soin de retirer les pépins. Rayer la carotte. Ajouter les légumes au poissons avec le citron cette fois ci dans un daladier. Ajouter le lait de coco. Pour ajouter un peu plus de saveur vous pouver ajouter 1 à 2 cuillères à soupe de crème de coco.
                   </p>
@@ -278,26 +239,14 @@
                   >
                 </div>
                 <div class="row">
-                  <ul class="col-sm-6 list-inline">
-                    <li class="list-inline-item">
-                      <strong>Poulet</strong> : 1
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Lait de coco</strong> : 400 ml
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Coulis de tomate</strong> : 25 cl
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Oignon</strong> : 1
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Poivron rouge</strong> : 1
-                    </li>
-                    <li class="list-inline-item">
-                      <strong>Huile d'olive</strong> : 1 cuillère à soupe
-                    </li>
-                  </ul>
+                  <p class="col-sm-6">
+                    <strong>Poulet</strong> : 1<br />
+                    <strong>Lait de coco</strong> : 400 ml<br />
+                    <strong>Coulis de tomate</strong> : 25 cl<br />
+                    <strong>Oignon</strong> : 1<br />
+                    <strong>Poivron rouge</strong> : 1<br />
+                    <strong>Huile d'olive</strong> : 1 cuillère à soupe
+                  </p>
                   <p class="col-sm-6">
                     Découper le poulet en morceaux, le faire dorer dans une cocotte avec de l'huile d'olive. Salez et poivrez. Une fois doré, laisser cuire en ajoutant de l'eau. Au bout de 30 minutes, ajouter le coulis de tomate, le lait de coco ainsi que le poivron et l'oignon découpés en morceaux. Laisser cuisiner 30 minutes de plus. Servir avec du riz.
                   </p>
