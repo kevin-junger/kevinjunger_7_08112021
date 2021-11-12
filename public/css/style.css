@@ -1,0 +1,12 @@
+.card-body p, .card-body ul {
+  height: 100% !important;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;  
+}
+.card-body p {
+  -webkit-line-clamp: 5;
+}
+.card-body ul {
+  -webkit-line-clamp: 3;
+}
