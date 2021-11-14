@@ -7,7 +7,14 @@
   -webkit-box-orient: vertical;
 }
 .fine-search {
-  max-width: 50%;
+  width: 200px;
+}
+.fine-search.open {
+  width: 50%;
+}
+.fine-search-list {
+  margin-left: -1rem;
+  z-index: 10;
 }
 .fine-search-input::placeholder {
   color: #ffffff;
