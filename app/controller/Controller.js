@@ -1,17 +1,24 @@
-import Database from "./Database.js"
+import Fail from "../view/Fail.js"
+import Index from "../view/Index.js"
 
 export default class Controller {
   constructor() {
     if (Controller.exists) {
       return Controller.instance
     }
+    this.json = 'app/controller/recipes.json'
     Controller.instance = this
     Controller.exists = true
     return this
   }
   init() {
-    new Database('app/controller/recipes.json').get().then((data) => {
-      console.log(data)
+    fetch(this.json).then((response) => {
+      return response.json()
+    }).then((result) => {
+      this.data = result.recipes
+      new Index(this.data).init()
+    }).catch((error) => {
+      new Fail(error).init()
     })
   }
 }
