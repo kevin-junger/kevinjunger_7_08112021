@@ -1,3 +1,7 @@
+import Controller from "./controller/Controller.js"
+
+new Controller().init()
+
 // for fine-search dropdowns - temporary
 
 const fine_search_dropdowns = document.querySelectorAll('.fine-search')
