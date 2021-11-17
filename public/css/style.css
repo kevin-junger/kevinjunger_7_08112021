@@ -14,6 +14,7 @@
   width: 50%;
 }
 .fine-search-button {
+  cursor: pointer;
   right: 1rem;
   top: 1.25rem;
 }
