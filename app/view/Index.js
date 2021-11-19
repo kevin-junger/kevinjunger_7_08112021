@@ -1,10 +1,68 @@
 export default class Index {
   constructor(data) {
     this.recipes = data
+    this.search = document.querySelector('.search-input')
+    this.searchBtn = document.querySelector('.search-btn')
+    this.fineSearchDropdowns = document.querySelectorAll('.fine-search')
+    this.wrapper = document.querySelector('.wrapper')
   }
 
   init() {
-    this.container = document.querySelector('.recipes')
+    this.initSearchEvents()
+    this.initFineSearchEvents()
+    this.displayCards()
+  }
+
+  initSearchEvents() {
+    this.searchBtn.addEventListener('click', () => {
+      this.displayCards() // à remplacer par la fonction de recherche
+    })
+    this.search.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        this.displayCards() // à remplacer par la fonction de recherche
+      }
+    })
+  }
+
+  initFineSearchEvents() {
+    this.fineSearchDropdowns.forEach((dropdown) => {
+      dropdown
+        .querySelector('.fine-search-button')
+        .addEventListener('click', () => {
+          if (dropdown.classList.contains('open')) {
+            dropdown.classList.remove('open')
+            dropdown.classList.remove('rounded-top')
+            dropdown.classList.toggle('rounded')
+            dropdown
+              .querySelector('.fine-search-label')
+              .classList.remove('visually-hidden')
+            dropdown
+              .querySelector('.fine-search-list')
+              .classList.toggle('visually-hidden')
+            dropdown
+              .querySelector('.fine-search-input')
+              .classList.toggle('visually-hidden')
+          } else {
+            dropdown.classList.toggle('open')
+            dropdown.classList.remove('rounded')
+            dropdown.classList.toggle('rounded-top')
+            dropdown
+              .querySelector('.fine-search-label')
+              .classList.toggle('visually-hidden')
+            dropdown
+              .querySelector('.fine-search-list')
+              .classList.remove('visually-hidden')
+            dropdown
+              .querySelector('.fine-search-input')
+              .classList.remove('visually-hidden')
+            dropdown.querySelector('.fine-search-input').focus()
+          }
+        })
+    })
+  }
+
+  displayCards() {
+    this.wrapper.innerHTML = ''
     this.recipes.forEach((recipe) => {
       const card = `
         <div class="d-flex h-50 col-sm-12 col-md-6 col-lg-6 col-xl-4">
@@ -37,7 +95,7 @@ export default class Index {
           </figure>
         </div>
       `
-      this.container.insertAdjacentHTML('beforeend', card)
+      this.wrapper.insertAdjacentHTML('beforeend', card)
     })
   }
 }
