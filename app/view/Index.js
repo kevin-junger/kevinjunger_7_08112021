@@ -10,16 +10,16 @@ export default class Index {
   init() {
     this.initSearchEvents()
     this.initFineSearchEvents()
-    this.displayCards()
+    this.displayCards(this.recipes)
   }
 
   initSearchEvents() {
     this.searchBtn.addEventListener('click', () => {
-      this.search()
+      this.getSearch()
     })
     this.search.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
-        this.search()
+        this.getSearch()
       }
     })
     this.search.addEventListener('input', () => {
@@ -30,10 +30,16 @@ export default class Index {
   }
 
   getSearch() {
-    // provisoire
-    console.log(this.search.value.trim())
-    this.displayCards()
-    // ----------
+    const result = this.recipes.filter(
+      (recipe) =>
+        recipe.name.toLowerCase().includes(`${this.search.value.trim()}`) ||
+        recipe.ingredients
+          .map((ingredient) => `${ingredient.ingredient.toLowerCase()}`)
+          .join(' ')
+          .includes(`${this.search.value.trim()}`) ||
+        recipe.description.toLowerCase().includes(`${this.search.value.trim()}`)
+    )
+    this.displayCards(result)
   }
 
   initFineSearchEvents() {
@@ -73,9 +79,9 @@ export default class Index {
     })
   }
 
-  displayCards() {
+  displayCards(searchResults) {
     this.wrapper.innerHTML = ''
-    this.recipes.forEach((recipe) => {
+    searchResults.forEach((recipe) => {
       const card = `
         <div class="d-flex h-50 col-sm-12 col-md-6 col-lg-6 col-xl-4">
           <figure class="bg-light card">
