@@ -15,13 +15,25 @@ export default class Index {
 
   initSearchEvents() {
     this.searchBtn.addEventListener('click', () => {
-      this.displayCards() // à remplacer par la fonction de recherche
+      this.search()
     })
     this.search.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
-        this.displayCards() // à remplacer par la fonction de recherche
+        this.search()
       }
     })
+    this.search.addEventListener('input', () => {
+      if (this.search.value.trim().length >= 3) {
+        this.getSearch()
+      }
+    })
+  }
+
+  getSearch() {
+    // provisoire
+    console.log(this.search.value.trim())
+    this.displayCards()
+    // ----------
   }
 
   initFineSearchEvents() {
