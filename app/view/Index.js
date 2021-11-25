@@ -25,21 +25,10 @@ export default class Index {
     this.search.addEventListener('input', () => {
       if (this.search.value.trim().length >= 3) {
         this.getSearch()
+      } else {
+        this.displayCards(this.recipes)
       }
     })
-  }
-
-  getSearch() {
-    const result = this.recipes.filter(
-      (recipe) =>
-        recipe.name.toLowerCase().includes(`${this.search.value.trim()}`) ||
-        recipe.ingredients
-          .map((ingredient) => `${ingredient.ingredient.toLowerCase()}`)
-          .join(' ')
-          .includes(`${this.search.value.trim()}`) ||
-        recipe.description.toLowerCase().includes(`${this.search.value.trim()}`)
-    )
-    this.displayCards(result)
   }
 
   initFineSearchEvents() {
@@ -79,9 +68,22 @@ export default class Index {
     })
   }
 
-  displayCards(searchResults) {
+  getSearch() {
+    const search = this.search.value.trim().toLowerCase()
+    const result = this.recipes.filter(
+      (recipe) =>
+        recipe.name.toLowerCase().includes(search) ||
+        recipe.ingredients.find((ingredient) =>
+          ingredient.ingredient.toLowerCase().includes(search)
+        ) ||
+        recipe.description.toLowerCase().includes(search)
+    )
+    this.displayCards(result)
+  }
+
+  displayCards(recipes) {
     this.wrapper.innerHTML = ''
-    searchResults.forEach((recipe) => {
+    recipes.forEach((recipe) => {
       const card = `
         <div class="d-flex h-50 col-sm-12 col-md-6 col-lg-6 col-xl-4">
           <figure class="bg-light card">
