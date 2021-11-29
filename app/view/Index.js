@@ -73,10 +73,10 @@ export default class Index {
     const result = this.recipes.filter(
       (recipe) =>
         recipe.name.toLowerCase().includes(search) ||
+        recipe.description.toLowerCase().includes(search) ||
         recipe.ingredients.find((ingredient) =>
           ingredient.ingredient.toLowerCase().includes(search)
-        ) ||
-        recipe.description.toLowerCase().includes(search)
+        )
     )
     this.displayCards(result)
   }
