@@ -69,7 +69,6 @@ export default class Index {
   }
 
   getSearch() {
-    console.time('search')
     const search = this.search.value.trim().toLowerCase()
     const results = []
     for (const recipe of this.recipes) {
@@ -87,7 +86,6 @@ export default class Index {
       }
     }
     this.displayCards(results)
-    console.timeEnd('search')
   }
 
   displayCards(recipes) {
