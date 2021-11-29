@@ -69,6 +69,7 @@ export default class Index {
   }
 
   getSearch() {
+    console.time('search')
     const search = this.search.value.trim().toLowerCase()
     const result = this.recipes.filter(
       (recipe) =>
@@ -79,6 +80,7 @@ export default class Index {
         )
     )
     this.displayCards(result)
+    console.timeEnd('search')
   }
 
   displayCards(recipes) {
