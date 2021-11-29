@@ -70,15 +70,19 @@ export default class Index {
 
   getSearch() {
     const search = this.search.value.trim().toLowerCase()
-    const result = this.recipes.filter(
-      (recipe) =>
+    const results = []
+    for (const recipe of this.recipes) {
+      if (
         recipe.name.toLowerCase().includes(search) ||
+        recipe.description.toLowerCase().includes(search) ||
         recipe.ingredients.find((ingredient) =>
           ingredient.ingredient.toLowerCase().includes(search)
-        ) ||
-        recipe.description.toLowerCase().includes(search)
-    )
-    this.displayCards(result)
+        )
+      ) {
+        results.push(recipe)
+      }
+    }
+    this.displayCards(results)
   }
 
   displayCards(recipes) {
