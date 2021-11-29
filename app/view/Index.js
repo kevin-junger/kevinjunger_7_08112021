@@ -74,6 +74,10 @@ export default class Index {
       (recipe) =>
         recipe.name.toLowerCase().includes(search) ||
         recipe.description.toLowerCase().includes(search) ||
+        recipe.appliance.toLowerCase().includes(search) ||
+        recipe.utensils.find((utensil) =>
+          utensil.toLowerCase().includes(search)
+        ) ||
         recipe.ingredients.find((ingredient) =>
           ingredient.ingredient.toLowerCase().includes(search)
         )
