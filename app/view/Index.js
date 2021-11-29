@@ -73,15 +73,20 @@ export default class Index {
     const results = []
     for (const recipe of this.recipes) {
       if (
-        recipe.name.toLowerCase().includes(search) ||
-        recipe.description.toLowerCase().includes(search)
+        recipe.name.toLowerCase().indexOf(search) !== -1 ||
+        recipe.description.toLowerCase().indexOf(search) !== -1 ||
+        recipe.appliance.toLowerCase().indexOf(search) !== -1
       ) {
         results.push(recipe)
-      } else {
-        for (const ingredient of recipe.ingredients) {
-          if (ingredient.ingredient.toLowerCase().includes(search)) {
-            results.push(recipe)
-          }
+      }
+      for (const ingredient of recipe.ingredients) {
+        if (ingredient.ingredient.toLowerCase().indexOf(search) !== -1) {
+          results.push(recipe)
+        }
+      }
+      for (const utensil of recipe.utensils) {
+        if (utensil.toLowerCase().indexOf(search) !== -1) {
+          results.push(recipe)
         }
       }
     }
