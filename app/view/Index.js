@@ -69,20 +69,25 @@ export default class Index {
   }
 
   getSearch() {
+    console.time('search')
     const search = this.search.value.trim().toLowerCase()
     const results = []
     for (const recipe of this.recipes) {
       if (
         recipe.name.toLowerCase().includes(search) ||
-        recipe.description.toLowerCase().includes(search) ||
-        recipe.ingredients.find((ingredient) =>
-          ingredient.ingredient.toLowerCase().includes(search)
-        )
+        recipe.description.toLowerCase().includes(search)
       ) {
         results.push(recipe)
+      } else {
+        for (const ingredient of recipe.ingredients) {
+          if (ingredient.ingredient.toLowerCase().includes(search)) {
+            results.push(recipe)
+          }
+        }
       }
     }
     this.displayCards(results)
+    console.timeEnd('search')
   }
 
   displayCards(recipes) {
