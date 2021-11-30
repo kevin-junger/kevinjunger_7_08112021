@@ -71,22 +71,29 @@ export default class Index {
   getSearch() {
     const search = this.search.value.trim().toLowerCase()
     const results = []
-    for (const recipe of this.recipes) {
+    search_loop: for (let i = 0; i < this.recipes.length; i++) {
       if (
-        recipe.name.toLowerCase().indexOf(search) !== -1 ||
-        recipe.description.toLowerCase().indexOf(search) !== -1 ||
-        recipe.appliance.toLowerCase().indexOf(search) !== -1
+        this.recipes[i].name.toLowerCase().indexOf(search) !== -1 ||
+        this.recipes[i].description.toLowerCase().indexOf(search) !== -1 ||
+        this.recipes[i].appliance.toLowerCase().indexOf(search) !== -1
       ) {
-        results.push(recipe)
+        results.push(this.recipes[i])
+        continue
       }
-      for (const ingredient of recipe.ingredients) {
-        if (ingredient.ingredient.toLowerCase().indexOf(search) !== -1) {
-          results.push(recipe)
+      for (let x = 0; x < this.recipes[i].ingredients.length; x++) {
+        if (
+          this.recipes[i].ingredients[x].ingredient
+            .toLowerCase()
+            .indexOf(search) !== -1
+        ) {
+          results.push(this.recipes[i])
+          continue search_loop
         }
       }
-      for (const utensil of recipe.utensils) {
-        if (utensil.toLowerCase().indexOf(search) !== -1) {
-          results.push(recipe)
+      for (let y = 0; y < this.recipes[i].utensils.length; y++) {
+        if (this.recipes[i].utensils[y].toLowerCase().indexOf(search) !== -1) {
+          results.push(this.recipes[i])
+          continue search_loop
         }
       }
     }
