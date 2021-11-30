@@ -80,18 +80,18 @@ export default class Index {
         results.push(this.recipes[i])
         continue
       }
+      for (let y = 0; y < this.recipes[i].utensils.length; y++) {
+        if (this.recipes[i].utensils[y].toLowerCase().indexOf(search) !== -1) {
+          results.push(this.recipes[i])
+          continue search_loop
+        }
+      }
       for (let x = 0; x < this.recipes[i].ingredients.length; x++) {
         if (
           this.recipes[i].ingredients[x].ingredient
             .toLowerCase()
             .indexOf(search) !== -1
         ) {
-          results.push(this.recipes[i])
-          continue search_loop
-        }
-      }
-      for (let y = 0; y < this.recipes[i].utensils.length; y++) {
-        if (this.recipes[i].utensils[y].toLowerCase().indexOf(search) !== -1) {
           results.push(this.recipes[i])
           continue search_loop
         }
