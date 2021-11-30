@@ -4,12 +4,16 @@ export default class Index {
     this.search = document.querySelector('.search-input')
     this.searchBtn = document.querySelector('.search-btn')
     this.fineSearchDropdowns = document.querySelectorAll('.fine-search')
+    this.fineSearchIngredients = document.querySelector('.ingredient-list')
+    this.fineSearchAppliances = document.querySelector('.appliance-list')
+    this.fineSearchUtensils = document.querySelector('.utensils-list')
     this.wrapper = document.querySelector('.wrapper')
   }
 
   init() {
     this.initSearchEvents()
     this.initFineSearchEvents()
+    this.displayFineSearchLists(this.recipes)
     this.displayCards(this.recipes)
   }
 
@@ -26,6 +30,7 @@ export default class Index {
       if (this.search.value.trim().length >= 3) {
         this.getSearch()
       } else {
+        this.displayFineSearchLists(this.recipes)
         this.displayCards(this.recipes)
       }
     })
@@ -82,7 +87,41 @@ export default class Index {
           ingredient.ingredient.toLowerCase().includes(search)
         )
     )
+    this.displayFineSearchLists(result)
     this.displayCards(result)
+  }
+
+  displayFineSearchLists(recipes) {
+    const ingredients = []
+    const appliances = []
+    const utensils = []
+    recipes.forEach((recipe) => {
+      recipe.ingredients.forEach((ingredient) => {
+        if (!ingredients.includes(ingredient.ingredient)) {
+          ingredients.push(ingredient.ingredient)
+        }
+      })
+      if (!appliances.includes(recipe.appliance)) {
+        appliances.push(recipe.appliance)
+      }
+      recipe.utensils.forEach((utensil) => {
+        if (!utensils.includes(utensil)) {
+          utensils.push(utensil)
+        }
+      })
+    })
+    this.fineSearchIngredients.innerHTML = `${ingredients
+      .sort()
+      .map((element) => `<li>${element.toLowerCase()}</li>`)
+      .join('')}`
+    this.fineSearchAppliances.innerHTML = `${appliances
+      .sort()
+      .map((element) => `<li>${element.toLowerCase()}</li>`)
+      .join('')}`
+    this.fineSearchUtensils.innerHTML = `${utensils
+      .sort()
+      .map((element) => `<li>${element.toLowerCase()}</li>`)
+      .join('')}`
   }
 
   displayCards(recipes) {
