@@ -112,14 +112,17 @@ export default class Index {
     })
     this.fineSearchIngredients.innerHTML = `${ingredients
       .sort()
+      .slice(0, 12)
       .map((element) => `<li>${element.toLowerCase()}</li>`)
       .join('')}`
     this.fineSearchAppliances.innerHTML = `${appliances
       .sort()
+      .slice(0, 12)
       .map((element) => `<li>${element.toLowerCase()}</li>`)
       .join('')}`
     this.fineSearchUtensils.innerHTML = `${utensils
       .sort()
+      .slice(0, 12)
       .map((element) => `<li>${element.toLowerCase()}</li>`)
       .join('')}`
   }
