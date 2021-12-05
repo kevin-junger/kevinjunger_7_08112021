@@ -57,12 +57,23 @@ export default class Index {
             dropdown.querySelector('.fine-search-input').focus()
           }
         })
+      dropdown
+        .querySelector('.fine-search-input')
+        .addEventListener('input', () => {
+          this.getFineSearchList(
+            dropdown.id,
+            dropdown
+              .querySelector('.fine-search-input')
+              .value.trim()
+              .toLowerCase()
+          )
+        })
     })
   }
 
   initDisplay() {
     this.displayCards(this.recipes)
-    this.displayAllFineSearchLists(this.recipes)
+    this.getAllFineSearchLists(this.recipes)
   }
 
   getSearch() {
@@ -80,15 +91,15 @@ export default class Index {
             ingredient.ingredient.toLowerCase().includes(search)
           )
       )
-      this.displayAllFineSearchLists(result)
+      this.getAllFineSearchLists(result)
       this.displayCards(result)
     } else {
-      this.displayAllFineSearchLists(this.recipes)
+      this.getAllFineSearchLists(this.recipes)
       this.displayCards(this.recipes)
     }
   }
 
-  displayAllFineSearchLists(recipes) {
+  getAllFineSearchLists(recipes) {
     this.fineSearchLists = {
       ingredients: [],
       appliances: [],
@@ -109,6 +120,30 @@ export default class Index {
         }
       })
     })
+    this.displayAllFineSearchLists()
+  }
+
+  getFineSearchList(context, value) {
+    const result = this.fineSearchLists[context].filter((item) =>
+      item.toLowerCase().includes(value)
+    )
+    this.displayFineSearchList(context, result)
+  }
+
+  displayFineSearchList(context, items) {
+    this.fineSearchDropdowns.forEach((dropdown) => {
+      if (dropdown.id === context) {
+        const list = dropdown.querySelector('ul')
+        list.innerHTML = `${items
+          .sort()
+          .slice(0, 16)
+          .map((element) => `<li>${element.toLowerCase()}</li>`)
+          .join('')}`
+      }
+    })
+  }
+
+  displayAllFineSearchLists() {
     this.fineSearchDropdowns.forEach((dropdown) => {
       const list = dropdown.querySelector('ul')
       list.innerHTML = `${this.fineSearchLists[dropdown.id]
