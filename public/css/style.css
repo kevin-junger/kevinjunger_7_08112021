@@ -1,3 +1,9 @@
+.tags {
+  min-height: 50px;
+}
+.card {
+  cursor: pointer;
+}
 .card-body p,
 .card-body ul {
   height: 100% !important;
@@ -29,7 +35,9 @@
   z-index: 10;
 }
 .fine-search-list li {
-  width: 25%;
+  cursor: pointer;
+  width: 33%;
+  padding: 0.25rem;
 }
 .fine-search-input::placeholder {
   color: #ffffff;
@@ -49,10 +57,12 @@
   }
 }
 @media screen and (max-width: 767px) {
-  .fine-search, .fine-search.open {
+  .fine-search,
+  .fine-search.open {
     width: 100%;
   }
-  .fine-search-label, .fine-search-list {
+  .fine-search-label,
+  .fine-search-list {
     text-align: center;
   }
   .fine-search-label {

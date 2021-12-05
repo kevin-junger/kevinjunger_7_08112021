@@ -1,28 +1,23 @@
 export default class Index {
   constructor(data) {
     this.recipes = data
-    this.search = document.querySelector('.search-input')
+    this.searchBar = document.querySelector('.search-input')
     this.searchBtn = document.querySelector('.search-btn')
     this.fineSearchDropdowns = document.querySelectorAll('.fine-search')
     this.wrapper = document.querySelector('.wrapper')
   }
 
   init() {
-    this.initEvents()
-    this.initDisplay()
-  }
-
-  initEvents() {
     this.searchBtn.addEventListener('click', () => {
-      this.getSearch()
+      this.search(this.searchBar.value.trim().toLowerCase())
     })
-    this.search.addEventListener('keydown', (e) => {
+    this.searchBar.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
-        this.getSearch()
+        this.search(this.searchBar.value.trim().toLowerCase())
       }
     })
-    this.search.addEventListener('input', () => {
-      this.getSearch()
+    this.searchBar.addEventListener('input', () => {
+      this.search(this.searchBar.value.trim().toLowerCase())
     })
     this.fineSearchDropdowns.forEach((dropdown) => {
       dropdown
@@ -60,98 +55,103 @@ export default class Index {
       dropdown
         .querySelector('.fine-search-input')
         .addEventListener('input', () => {
-          this.getFineSearchList(
-            dropdown.id,
+          this.fineSearch(dropdown)
+        })
+    })
+    this.search()
+  }
+
+  search(value) {
+    if (!value || value.length < 3) {
+      this.searchResult = this.recipes
+    } else {
+      this.searchResult = this.recipes.filter(
+        (recipe) =>
+          recipe.name.toLowerCase().includes(value) ||
+          recipe.description.toLowerCase().includes(value) ||
+          recipe.appliance.toLowerCase().includes(value) ||
+          recipe.utensils.find((utensil) =>
+            utensil.toLowerCase().includes(value)
+          ) ||
+          recipe.ingredients.find((ingredient) =>
+            ingredient.ingredient.toLowerCase().includes(value)
+          )
+      )
+    }
+    this.fineSearchItems = {
+      ingredients: [],
+      appliances: [],
+      utensils: [],
+    }
+    this.fineSearchDropdowns.forEach((dropdown) => {
+      switch (dropdown.id) {
+        case 'ingredients':
+          this.searchResult.forEach((recipe) => {
+            recipe.ingredients.forEach((ingredient) => {
+              if (
+                !this.fineSearchItems.ingredients.includes(
+                  ingredient.ingredient
+                )
+              ) {
+                this.fineSearchItems.ingredients.push(ingredient.ingredient)
+              }
+            })
+          })
+          break
+        case 'appliances':
+          this.searchResult.forEach((recipe) => {
+            if (!this.fineSearchItems.appliances.includes(recipe.appliance)) {
+              this.fineSearchItems.appliances.push(recipe.appliance)
+            }
+          })
+          break
+        case 'utensils':
+          this.searchResult.forEach((recipe) => {
+            recipe.utensils.forEach((utensil) => {
+              if (!this.fineSearchItems.utensils.includes(utensil)) {
+                this.fineSearchItems.utensils.push(utensil)
+              }
+            })
+          })
+          break
+        default:
+          break
+      }
+      this.displayFineSearchList(this.fineSearchItems[dropdown.id], dropdown)
+    })
+    this.displayCards(this.searchResult)
+  }
+
+  fineSearch(dropdown) {
+    if (
+      !dropdown.querySelector('.fine-search-input').value.trim().toLowerCase()
+    ) {
+      this.displayFineSearchList(this.fineSearchItems[dropdown.id], dropdown)
+    } else {
+      const result = this.fineSearchItems[dropdown.id].filter((item) =>
+        item
+          .toLowerCase()
+          .includes(
             dropdown
               .querySelector('.fine-search-input')
               .value.trim()
               .toLowerCase()
           )
-        })
-    })
-  }
-
-  initDisplay() {
-    this.displayCards(this.recipes)
-    this.getAllFineSearchLists(this.recipes)
-  }
-
-  getSearch() {
-    const search = this.search.value.trim().toLowerCase()
-    if (!search.length < 3) {
-      const result = this.recipes.filter(
-        (recipe) =>
-          recipe.name.toLowerCase().includes(search) ||
-          recipe.description.toLowerCase().includes(search) ||
-          recipe.appliance.toLowerCase().includes(search) ||
-          recipe.utensils.find((utensil) =>
-            utensil.toLowerCase().includes(search)
-          ) ||
-          recipe.ingredients.find((ingredient) =>
-            ingredient.ingredient.toLowerCase().includes(search)
-          )
       )
-      this.getAllFineSearchLists(result)
-      this.displayCards(result)
-    } else {
-      this.getAllFineSearchLists(this.recipes)
-      this.displayCards(this.recipes)
+      this.displayFineSearchList(result, dropdown)
     }
   }
 
-  getAllFineSearchLists(recipes) {
-    this.fineSearchLists = {
-      ingredients: [],
-      appliances: [],
-      utensils: [],
-    }
-    recipes.forEach((recipe) => {
-      recipe.ingredients.forEach((ingredient) => {
-        if (!this.fineSearchLists.ingredients.includes(ingredient.ingredient)) {
-          this.fineSearchLists.ingredients.push(ingredient.ingredient)
-        }
-      })
-      if (!this.fineSearchLists.appliances.includes(recipe.appliance)) {
-        this.fineSearchLists.appliances.push(recipe.appliance)
-      }
-      recipe.utensils.forEach((utensil) => {
-        if (!this.fineSearchLists.utensils.includes(utensil)) {
-          this.fineSearchLists.utensils.push(utensil)
-        }
-      })
-    })
-    this.displayAllFineSearchLists()
-  }
+  selectTag() {}
 
-  getFineSearchList(context, value) {
-    const result = this.fineSearchLists[context].filter((item) =>
-      item.toLowerCase().includes(value)
-    )
-    this.displayFineSearchList(context, result)
-  }
+  deleteTag() {}
 
-  displayFineSearchList(context, items) {
-    this.fineSearchDropdowns.forEach((dropdown) => {
-      if (dropdown.id === context) {
-        const list = dropdown.querySelector('ul')
-        list.innerHTML = `${items
-          .sort()
-          .slice(0, 16)
-          .map((element) => `<li>${element.toLowerCase()}</li>`)
-          .join('')}`
-      }
-    })
-  }
-
-  displayAllFineSearchLists() {
-    this.fineSearchDropdowns.forEach((dropdown) => {
-      const list = dropdown.querySelector('ul')
-      list.innerHTML = `${this.fineSearchLists[dropdown.id]
-        .sort()
-        .slice(0, 16)
-        .map((element) => `<li>${element.toLowerCase()}</li>`)
-        .join('')}`
-    })
+  displayFineSearchList(items, dropdown) {
+    const list = dropdown.querySelector('ul')
+    list.innerHTML = `${items
+      .slice(0, 30)
+      .map((element) => `<li>${element.toLowerCase()}</li>`)
+      .join('')}`
   }
 
   displayCards(recipes) {
