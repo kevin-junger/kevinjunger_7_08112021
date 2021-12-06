@@ -3,6 +3,7 @@ export default class Index {
     this.recipes = data
     this.searchBar = document.querySelector('.search-input')
     this.searchBtn = document.querySelector('.search-btn')
+    this.selectedTags = document.querySelectorAll('.tag')
     this.fineSearchDropdowns = document.querySelectorAll('.fine-search')
     this.wrapper = document.querySelector('.wrapper')
   }
@@ -59,6 +60,7 @@ export default class Index {
         })
     })
     this.search()
+    this.filterByTag()
   }
 
   search(value) {
@@ -140,6 +142,10 @@ export default class Index {
       )
       this.displayFineSearchList(result, dropdown)
     }
+  }
+
+  filterByTag() {
+    console.log(this.selectedTags.length)
   }
 
   selectTag() {}
