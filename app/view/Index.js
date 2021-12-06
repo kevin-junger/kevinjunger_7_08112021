@@ -59,15 +59,15 @@ export default class Index {
           this.fineSearch(dropdown)
         })
     })
-    this.search()
-    this.filterByTag() // test
+    this.search(this.searchBar.value.trim().toLowerCase())
+    this.test()
   }
 
   search(value) {
     if (!value || value.length < 3) {
       this.searchResult = this.recipes
     } else {
-      this.searchResult = this.recipes.filter(
+      const result = this.recipes.filter(
         (recipe) =>
           recipe.name.toLowerCase().includes(value) ||
           recipe.description.toLowerCase().includes(value) ||
@@ -79,6 +79,44 @@ export default class Index {
             ingredient.ingredient.toLowerCase().includes(value)
           )
       )
+      const tags = this.tags.querySelectorAll('.tag')
+      if (tags.length !== 0) {
+        let filter = result
+        tags.forEach((tag) => {
+          switch (tag.getAttribute('data-category')) {
+            case 'ingredients':
+              filter = filter.filter((recipe) =>
+                recipe.ingredients.find((ingredient) =>
+                  ingredient.ingredient
+                    .toLowerCase()
+                    .includes(tag.textContent.trim().toLowerCase())
+                )
+              )
+              break
+            case 'appliances':
+              filter = filter.filter((recipe) =>
+                recipe.appliance
+                  .toLowerCase()
+                  .includes(tag.textContent.trim().toLowerCase())
+              )
+              break
+            case 'utensils':
+              filter = filter.filter((recipe) =>
+                recipe.utensils.find((utensil) =>
+                  utensil
+                    .toLowerCase()
+                    .includes(tag.textContent.trim().toLowerCase())
+                )
+              )
+              break
+            default:
+              break
+          }
+        })
+        this.searchResult = filter
+      } else {
+        this.searchResult = result
+      }
     }
     this.fineSearchItems = {
       ingredients: [],
@@ -121,6 +159,7 @@ export default class Index {
       }
       this.displayFineSearchList(this.fineSearchItems[dropdown.id], dropdown)
     })
+    console.log(this.searchResult)
     this.displayCards(this.searchResult)
   }
 
@@ -144,7 +183,7 @@ export default class Index {
     }
   }
 
-  filterByTag() {
+  test() {
     const tags = this.tags.querySelectorAll('.tag')
     console.log(tags.length)
     tags.forEach((tag) => {
@@ -178,12 +217,14 @@ export default class Index {
       this.deleteTag(tag)
     })
     this.tags.appendChild(tag)
-    this.filterByTag() // test
+    this.search(this.searchBar.value.trim().toLowerCase())
+    this.test()
   }
 
   deleteTag(tag) {
     this.tags.removeChild(tag)
-    this.filterByTag() // test
+    this.search(this.searchBar.value.trim().toLowerCase())
+    this.test()
   }
 
   displayFineSearchList(items, dropdown) {
