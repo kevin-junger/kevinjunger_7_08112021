@@ -3,7 +3,7 @@ export default class Index {
     this.recipes = data
     this.searchBar = document.querySelector('.search-input')
     this.searchBtn = document.querySelector('.search-btn')
-    this.selectedTags = document.querySelectorAll('.tag')
+    this.tags = document.querySelector('.tags')
     this.fineSearchDropdowns = document.querySelectorAll('.fine-search')
     this.wrapper = document.querySelector('.wrapper')
   }
@@ -60,7 +60,7 @@ export default class Index {
         })
     })
     this.search()
-    this.filterByTag()
+    this.filterByTag() // test
   }
 
   search(value) {
@@ -145,12 +145,46 @@ export default class Index {
   }
 
   filterByTag() {
-    console.log(this.selectedTags.length)
+    const tags = this.tags.querySelectorAll('.tag')
+    console.log(tags.length)
+    tags.forEach((tag) => {
+      console.log(
+        `${tag.getAttribute('data-category')} ${tag.textContent
+          .trim()
+          .toLowerCase()}`
+      )
+    })
   }
 
-  selectTag() {}
+  selectTag(category, name) {
+    const tag = document.createElement('div')
+    tag.setAttribute('data-category', category)
+    tag.className = 'tag col-auto p-2 mt-2 me-3 text-white rounded'
+    tag.innerHTML = `${name} <button class="bg-transparent border-0 text-white" type="button"><i class="far fa-times-circle"></i></button>`
+    switch (category) {
+      case 'ingredients':
+        tag.classList.add('bg-primary')
+        break
+      case 'appliances':
+        tag.classList.add('bg-success')
+        break
+      case 'utensils':
+        tag.classList.add('bg-danger')
+        break
+      default:
+        break
+    }
+    tag.querySelector('button').addEventListener('click', () => {
+      this.deleteTag(tag)
+    })
+    this.tags.appendChild(tag)
+    this.filterByTag() // test
+  }
 
-  deleteTag() {}
+  deleteTag(tag) {
+    this.tags.removeChild(tag)
+    this.filterByTag() // test
+  }
 
   displayFineSearchList(items, dropdown) {
     const list = dropdown.querySelector('ul')
@@ -158,6 +192,11 @@ export default class Index {
       .slice(0, 30)
       .map((element) => `<li>${element.toLowerCase()}</li>`)
       .join('')}`
+    list.querySelectorAll('li').forEach((item) => {
+      item.addEventListener('click', () => {
+        this.selectTag(dropdown.id, item.textContent.trim().toLowerCase())
+      })
+    })
   }
 
   displayCards(recipes) {
