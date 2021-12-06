@@ -60,100 +60,14 @@ export default class Index {
         })
     })
     this.search(this.searchBar.value.trim().toLowerCase())
-    this.test()
   }
 
   search(value) {
     if (!value || value.length < 3) {
-      const tags = this.tags.querySelectorAll('.tag')
-      if (tags.length !== 0) {
-        let filter = this.recipes
-        tags.forEach((tag) => {
-          switch (tag.getAttribute('data-category')) {
-            case 'ingredients':
-              filter = filter.filter((recipe) =>
-                recipe.ingredients.find((ingredient) =>
-                  ingredient.ingredient
-                    .toLowerCase()
-                    .includes(tag.textContent.trim().toLowerCase())
-                )
-              )
-              break
-            case 'appliances':
-              filter = filter.filter((recipe) =>
-                recipe.appliance
-                  .toLowerCase()
-                  .includes(tag.textContent.trim().toLowerCase())
-              )
-              break
-            case 'utensils':
-              filter = filter.filter((recipe) =>
-                recipe.utensils.find((utensil) =>
-                  utensil
-                    .toLowerCase()
-                    .includes(tag.textContent.trim().toLowerCase())
-                )
-              )
-              break
-            default:
-              break
-          }
-        })
-        this.searchResult = filter
-      } else {
-        this.searchResult = this.recipes
-      }
+      this.searchResult = this.filterByTags(this.recipes)
     } else {
-      const result = this.recipes.filter(
-        (recipe) =>
-          recipe.name.toLowerCase().includes(value) ||
-          recipe.description.toLowerCase().includes(value) ||
-          recipe.appliance.toLowerCase().includes(value) ||
-          recipe.utensils.find((utensil) =>
-            utensil.toLowerCase().includes(value)
-          ) ||
-          recipe.ingredients.find((ingredient) =>
-            ingredient.ingredient.toLowerCase().includes(value)
-          )
-      )
-      const tags = this.tags.querySelectorAll('.tag')
-      if (tags.length !== 0) {
-        let filter = result
-        tags.forEach((tag) => {
-          switch (tag.getAttribute('data-category')) {
-            case 'ingredients':
-              filter = filter.filter((recipe) =>
-                recipe.ingredients.find((ingredient) =>
-                  ingredient.ingredient
-                    .toLowerCase()
-                    .includes(tag.textContent.trim().toLowerCase())
-                )
-              )
-              break
-            case 'appliances':
-              filter = filter.filter((recipe) =>
-                recipe.appliance
-                  .toLowerCase()
-                  .includes(tag.textContent.trim().toLowerCase())
-              )
-              break
-            case 'utensils':
-              filter = filter.filter((recipe) =>
-                recipe.utensils.find((utensil) =>
-                  utensil
-                    .toLowerCase()
-                    .includes(tag.textContent.trim().toLowerCase())
-                )
-              )
-              break
-            default:
-              break
-          }
-        })
-        this.searchResult = filter
-      } else {
-        this.searchResult = result
-      }
+      const result = this.filterByValue(value)
+      this.searchResult = this.filterByTags(result)
     }
     this.fineSearchItems = {
       ingredients: [],
@@ -196,8 +110,62 @@ export default class Index {
       }
       this.displayFineSearchList(this.fineSearchItems[dropdown.id], dropdown)
     })
-    console.log(this.searchResult)
     this.displayCards(this.searchResult)
+  }
+
+  filterByValue(value) {
+    const result = this.recipes.filter(
+      (recipe) =>
+        recipe.name.toLowerCase().includes(value) ||
+        recipe.description.toLowerCase().includes(value) ||
+        recipe.appliance.toLowerCase().includes(value) ||
+        recipe.utensils.find((utensil) =>
+          utensil.toLowerCase().includes(value)
+        ) ||
+        recipe.ingredients.find((ingredient) =>
+          ingredient.ingredient.toLowerCase().includes(value)
+        )
+    )
+    return result
+  }
+
+  filterByTags(recipes) {
+    const tags = this.tags.querySelectorAll('.tag')
+    let result = recipes
+    if (tags.length !== 0) {
+      tags.forEach((tag) => {
+        switch (tag.getAttribute('data-category')) {
+          case 'ingredients':
+            result = result.filter((recipe) =>
+              recipe.ingredients.find((ingredient) =>
+                ingredient.ingredient
+                  .toLowerCase()
+                  .includes(tag.textContent.trim().toLowerCase())
+              )
+            )
+            break
+          case 'appliances':
+            result = result.filter((recipe) =>
+              recipe.appliance
+                .toLowerCase()
+                .includes(tag.textContent.trim().toLowerCase())
+            )
+            break
+          case 'utensils':
+            result = result.filter((recipe) =>
+              recipe.utensils.find((utensil) =>
+                utensil
+                  .toLowerCase()
+                  .includes(tag.textContent.trim().toLowerCase())
+              )
+            )
+            break
+          default:
+            break
+        }
+      })
+    }
+    return result
   }
 
   fineSearch(dropdown) {
@@ -218,18 +186,6 @@ export default class Index {
       )
       this.displayFineSearchList(result, dropdown)
     }
-  }
-
-  test() {
-    const tags = this.tags.querySelectorAll('.tag')
-    console.log(tags.length)
-    tags.forEach((tag) => {
-      console.log(
-        `${tag.getAttribute('data-category')} ${tag.textContent
-          .trim()
-          .toLowerCase()}`
-      )
-    })
   }
 
   selectTag(category, name) {
@@ -255,13 +211,11 @@ export default class Index {
     })
     this.tags.appendChild(tag)
     this.search(this.searchBar.value.trim().toLowerCase())
-    this.test()
   }
 
   deleteTag(tag) {
     this.tags.removeChild(tag)
     this.search(this.searchBar.value.trim().toLowerCase())
-    this.test()
   }
 
   displayFineSearchList(items, dropdown) {
