@@ -70,18 +70,33 @@ export default class Index {
   }
 
   searchByValue(value) {
-    const result = this.recipes.filter(
-      (recipe) =>
-        recipe.name.toLowerCase().includes(value) ||
-        recipe.description.toLowerCase().includes(value) ||
-        recipe.appliance.toLowerCase().includes(value) ||
-        recipe.utensils.find((utensil) =>
-          utensil.toLowerCase().includes(value)
-        ) ||
-        recipe.ingredients.find((ingredient) =>
-          ingredient.ingredient.toLowerCase().includes(value)
-        )
-    )
+    const result = []
+    search_loop: for (let i = 0; i < this.recipes.length; i++) {
+      if (
+        this.recipes[i].name.toLowerCase().includes(value) ||
+        this.recipes[i].description.toLowerCase().includes(value) ||
+        this.recipes[i].appliance.toLowerCase().includes(value)
+      ) {
+        result.push(this.recipes[i])
+        continue
+      }
+      for (let y = 0; y < this.recipes[i].utensils.length; y++) {
+        if (this.recipes[i].utensils[y].toLowerCase().includes(value)) {
+          result.push(this.recipes[i])
+          continue search_loop
+        }
+      }
+      for (let x = 0; x < this.recipes[i].ingredients.length; x++) {
+        if (
+          this.recipes[i].ingredients[x].ingredient
+            .toLowerCase()
+            .includes(value)
+        ) {
+          result.push(this.recipes[i])
+          continue search_loop
+        }
+      }
+    }
     return result
   }
 
