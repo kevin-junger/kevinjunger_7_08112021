@@ -12,60 +12,60 @@
   -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
 }
-.fine-search {
+.filter {
   width: 200px;
   height: 58px;
 }
-.fine-search.open {
+.filter.open {
   width: 50%;
 }
-.fine-search-button {
+.filter-button {
   cursor: pointer;
   right: 1rem;
   top: 1.25rem;
 }
-.fine-search.open .fine-search-button {
+.filter.open .filter-button {
   transform: rotate(180deg);
 }
-.fine-search-input {
+.filter-input {
   width: 94%;
 }
-.fine-search-list {
+.filter-list {
   margin-left: -1rem;
   z-index: 10;
 }
-.fine-search-list li {
+.filter-list li {
   cursor: pointer;
   width: 33%;
   padding: 0.25rem;
 }
-.fine-search-input::placeholder {
+.filter-input::placeholder {
   color: #ffffff;
   opacity: 50%;
 }
 @media screen and (max-width: 1199px) {
-  .fine-search-list li {
+  .filter-list li {
     width: 50%;
   }
 }
 @media screen and (max-width: 991px) {
-  .fine-search.open {
+  .filter.open {
     width: 30%;
   }
-  .fine-search-list li {
+  .filter-list li {
     width: 100%;
   }
 }
 @media screen and (max-width: 767px) {
-  .fine-search,
-  .fine-search.open {
+  .filter,
+  .filter.open {
     width: 100%;
   }
-  .fine-search-label,
-  .fine-search-list {
+  .filter-label,
+  .filter-list {
     text-align: center;
   }
-  .fine-search-label {
+  .filter-label {
     width: 100%;
   }
 }

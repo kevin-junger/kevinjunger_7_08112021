@@ -4,7 +4,7 @@ export default class Index {
     this.searchBar = document.querySelector('.search-input')
     this.searchBtn = document.querySelector('.search-btn')
     this.tags = document.querySelector('.tags')
-    this.fineSearchDropdowns = document.querySelectorAll('.fine-search')
+    this.filter = document.querySelectorAll('.filter')
     this.wrapper = document.querySelector('.wrapper')
   }
 
@@ -20,44 +20,40 @@ export default class Index {
     this.searchBar.addEventListener('input', () => {
       this.search(this.searchBar.value.trim().toLowerCase())
     })
-    this.fineSearchDropdowns.forEach((dropdown) => {
-      dropdown
-        .querySelector('.fine-search-button')
-        .addEventListener('click', () => {
-          if (dropdown.classList.contains('open')) {
-            dropdown.classList.remove('open')
-            dropdown.classList.remove('rounded-top')
-            dropdown.classList.toggle('rounded')
-            dropdown
-              .querySelector('.fine-search-label')
-              .classList.remove('visually-hidden')
-            dropdown
-              .querySelector('.fine-search-list')
-              .classList.toggle('visually-hidden')
-            dropdown
-              .querySelector('.fine-search-input')
-              .classList.toggle('visually-hidden')
-          } else {
-            dropdown.classList.toggle('open')
-            dropdown.classList.remove('rounded')
-            dropdown.classList.toggle('rounded-top')
-            dropdown
-              .querySelector('.fine-search-label')
-              .classList.toggle('visually-hidden')
-            dropdown
-              .querySelector('.fine-search-list')
-              .classList.remove('visually-hidden')
-            dropdown
-              .querySelector('.fine-search-input')
-              .classList.remove('visually-hidden')
-            dropdown.querySelector('.fine-search-input').focus()
-          }
-        })
-      dropdown
-        .querySelector('.fine-search-input')
-        .addEventListener('input', () => {
-          this.fineSearch(dropdown)
-        })
+    this.filter.forEach((filter) => {
+      filter.querySelector('.filter-button').addEventListener('click', () => {
+        if (filter.classList.contains('open')) {
+          filter.classList.remove('open')
+          filter.classList.remove('rounded-top')
+          filter.classList.toggle('rounded')
+          filter
+            .querySelector('.filter-label')
+            .classList.remove('visually-hidden')
+          filter
+            .querySelector('.filter-list')
+            .classList.toggle('visually-hidden')
+          filter
+            .querySelector('.filter-input')
+            .classList.toggle('visually-hidden')
+        } else {
+          filter.classList.toggle('open')
+          filter.classList.remove('rounded')
+          filter.classList.toggle('rounded-top')
+          filter
+            .querySelector('.filter-label')
+            .classList.toggle('visually-hidden')
+          filter
+            .querySelector('.filter-list')
+            .classList.remove('visually-hidden')
+          filter
+            .querySelector('.filter-input')
+            .classList.remove('visually-hidden')
+          filter.querySelector('.filter-input').focus()
+        }
+      })
+      filter.querySelector('.filter-input').addEventListener('input', () => {
+        this.fineSearch(filter)
+      })
     })
     this.search(this.searchBar.value.trim().toLowerCase())
   }
@@ -66,41 +62,39 @@ export default class Index {
     if (!value || value.length < 3) {
       this.searchResult = this.filterByTags(this.recipes)
     } else {
-      const result = this.filterByValue(value)
+      const result = this.searchByValue(value)
       this.searchResult = this.filterByTags(result)
     }
-    this.fineSearchItems = {
+    this.filtersTags = {
       ingredients: [],
       appliances: [],
       utensils: [],
     }
-    this.fineSearchDropdowns.forEach((dropdown) => {
-      switch (dropdown.id) {
+    this.filter.forEach((filter) => {
+      switch (filter.id) {
         case 'ingredients':
           this.searchResult.forEach((recipe) => {
             recipe.ingredients.forEach((ingredient) => {
               if (
-                !this.fineSearchItems.ingredients.includes(
-                  ingredient.ingredient
-                )
+                !this.filtersTags.ingredients.includes(ingredient.ingredient)
               ) {
-                this.fineSearchItems.ingredients.push(ingredient.ingredient)
+                this.filtersTags.ingredients.push(ingredient.ingredient)
               }
             })
           })
           break
         case 'appliances':
           this.searchResult.forEach((recipe) => {
-            if (!this.fineSearchItems.appliances.includes(recipe.appliance)) {
-              this.fineSearchItems.appliances.push(recipe.appliance)
+            if (!this.filtersTags.appliances.includes(recipe.appliance)) {
+              this.filtersTags.appliances.push(recipe.appliance)
             }
           })
           break
         case 'utensils':
           this.searchResult.forEach((recipe) => {
             recipe.utensils.forEach((utensil) => {
-              if (!this.fineSearchItems.utensils.includes(utensil)) {
-                this.fineSearchItems.utensils.push(utensil)
+              if (!this.filtersTags.utensils.includes(utensil)) {
+                this.filtersTags.utensils.push(utensil)
               }
             })
           })
@@ -108,12 +102,12 @@ export default class Index {
         default:
           break
       }
-      this.displayFineSearchList(this.fineSearchItems[dropdown.id], dropdown)
+      this.displayFilterList(this.filtersTags[filter.id], filter)
     })
     this.displayCards(this.searchResult)
   }
 
-  filterByValue(value) {
+  searchByValue(value) {
     const result = this.recipes.filter(
       (recipe) =>
         recipe.name.toLowerCase().includes(value) ||
@@ -168,23 +162,18 @@ export default class Index {
     return result
   }
 
-  fineSearch(dropdown) {
-    if (
-      !dropdown.querySelector('.fine-search-input').value.trim().toLowerCase()
-    ) {
-      this.displayFineSearchList(this.fineSearchItems[dropdown.id], dropdown)
+  fineSearch(filter) {
+    if (!filter.querySelector('.filter-input').value.trim().toLowerCase()) {
+      this.displayFilterList(this.filtersTags[filter.id], filter)
     } else {
-      const result = this.fineSearchItems[dropdown.id].filter((item) =>
+      const result = this.filtersTags[filter.id].filter((item) =>
         item
           .toLowerCase()
           .includes(
-            dropdown
-              .querySelector('.fine-search-input')
-              .value.trim()
-              .toLowerCase()
+            filter.querySelector('.filter-input').value.trim().toLowerCase()
           )
       )
-      this.displayFineSearchList(result, dropdown)
+      this.displayFilterList(result, filter)
     }
   }
 
@@ -218,15 +207,15 @@ export default class Index {
     this.search(this.searchBar.value.trim().toLowerCase())
   }
 
-  displayFineSearchList(items, dropdown) {
-    const list = dropdown.querySelector('ul')
+  displayFilterList(items, filter) {
+    const list = filter.querySelector('ul')
     list.innerHTML = `${items
       .slice(0, 30)
       .map((element) => `<li>${element.toLowerCase()}</li>`)
       .join('')}`
     list.querySelectorAll('li').forEach((item) => {
       item.addEventListener('click', () => {
-        this.selectTag(dropdown.id, item.textContent.trim().toLowerCase())
+        this.selectTag(filter.id, item.textContent.trim().toLowerCase())
       })
     })
   }
