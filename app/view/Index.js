@@ -52,7 +52,7 @@ export default class Index {
         }
       })
       filter.querySelector('.filter-input').addEventListener('input', () => {
-        this.fineSearch(filter)
+        this.searchInFilter(filter)
       })
     })
     this.search(this.searchBar.value.trim().toLowerCase())
@@ -65,46 +65,8 @@ export default class Index {
       const result = this.searchByValue(value)
       this.searchResult = this.filterByTags(result)
     }
-    this.filtersTags = {
-      ingredients: [],
-      appliances: [],
-      utensils: [],
-    }
-    this.filter.forEach((filter) => {
-      switch (filter.id) {
-        case 'ingredients':
-          this.searchResult.forEach((recipe) => {
-            recipe.ingredients.forEach((ingredient) => {
-              if (
-                !this.filtersTags.ingredients.includes(ingredient.ingredient)
-              ) {
-                this.filtersTags.ingredients.push(ingredient.ingredient)
-              }
-            })
-          })
-          break
-        case 'appliances':
-          this.searchResult.forEach((recipe) => {
-            if (!this.filtersTags.appliances.includes(recipe.appliance)) {
-              this.filtersTags.appliances.push(recipe.appliance)
-            }
-          })
-          break
-        case 'utensils':
-          this.searchResult.forEach((recipe) => {
-            recipe.utensils.forEach((utensil) => {
-              if (!this.filtersTags.utensils.includes(utensil)) {
-                this.filtersTags.utensils.push(utensil)
-              }
-            })
-          })
-          break
-        default:
-          break
-      }
-      this.displayFilterList(this.filtersTags[filter.id], filter)
-    })
-    this.displayCards(this.searchResult)
+    this.getTags()
+    this.displayCards()
   }
 
   searchByValue(value) {
@@ -162,7 +124,7 @@ export default class Index {
     return result
   }
 
-  fineSearch(filter) {
+  searchInFilter(filter) {
     if (!filter.querySelector('.filter-input').value.trim().toLowerCase()) {
       this.displayFilterList(this.filtersTags[filter.id], filter)
     } else {
@@ -175,6 +137,48 @@ export default class Index {
       )
       this.displayFilterList(result, filter)
     }
+  }
+
+  getTags() {
+    this.filtersTags = {
+      ingredients: [],
+      appliances: [],
+      utensils: [],
+    }
+    this.filter.forEach((filter) => {
+      switch (filter.id) {
+        case 'ingredients':
+          this.searchResult.forEach((recipe) => {
+            recipe.ingredients.forEach((ingredient) => {
+              if (
+                !this.filtersTags.ingredients.includes(ingredient.ingredient)
+              ) {
+                this.filtersTags.ingredients.push(ingredient.ingredient)
+              }
+            })
+          })
+          break
+        case 'appliances':
+          this.searchResult.forEach((recipe) => {
+            if (!this.filtersTags.appliances.includes(recipe.appliance)) {
+              this.filtersTags.appliances.push(recipe.appliance)
+            }
+          })
+          break
+        case 'utensils':
+          this.searchResult.forEach((recipe) => {
+            recipe.utensils.forEach((utensil) => {
+              if (!this.filtersTags.utensils.includes(utensil)) {
+                this.filtersTags.utensils.push(utensil)
+              }
+            })
+          })
+          break
+        default:
+          break
+      }
+      this.displayFilterList(this.filtersTags[filter.id], filter)
+    })
   }
 
   selectTag(category, name) {
@@ -207,22 +211,22 @@ export default class Index {
     this.search(this.searchBar.value.trim().toLowerCase())
   }
 
-  displayFilterList(items, filter) {
+  displayFilterList(tags, filter) {
     const list = filter.querySelector('ul')
-    list.innerHTML = `${items
+    list.innerHTML = `${tags
       .slice(0, 30)
       .map((element) => `<li>${element.toLowerCase()}</li>`)
       .join('')}`
-    list.querySelectorAll('li').forEach((item) => {
-      item.addEventListener('click', () => {
-        this.selectTag(filter.id, item.textContent.trim().toLowerCase())
+    list.querySelectorAll('li').forEach((tag) => {
+      tag.addEventListener('click', () => {
+        this.selectTag(filter.id, tag.textContent.trim().toLowerCase())
       })
     })
   }
 
-  displayCards(recipes) {
+  displayCards() {
     this.wrapper.innerHTML = ''
-    recipes.forEach((recipe) => {
+    this.searchResult.forEach((recipe) => {
       const card = `
         <div class="d-flex h-50 col-sm-12 col-md-6 col-lg-6 col-xl-4">
           <figure class="bg-light card">
