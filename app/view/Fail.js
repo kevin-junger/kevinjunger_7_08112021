@@ -6,9 +6,11 @@ export default class Fail {
 
   init() {
     this.wrapper.innerHTML = `
-      <h2>Oups !</h2>
-      <p>Une erreur s'est produite, veuillez réessayer.</p>
-      <p>${this.error}</p>
+      <div class="col">
+        <h2 class="text-muted">Oups !</h2>
+        <p class="text-muted">Une erreur s'est produite, veuillez réessayer.</p>
+        <code>${this.error}</code>
+      </div>
     `
   }
 }

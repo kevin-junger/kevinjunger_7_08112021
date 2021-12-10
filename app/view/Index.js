@@ -4,6 +4,11 @@ export default class Index {
     this.searchBar = document.querySelector('.search-input')
     this.searchBtn = document.querySelector('.search-btn')
     this.tags = document.querySelector('.tags')
+    this.selectedTags = {
+      ingredients: [],
+      appliances: [],
+      utensils: [],
+    }
     this.filter = document.querySelectorAll('.filter')
     this.wrapper = document.querySelector('.wrapper')
   }
@@ -21,36 +26,38 @@ export default class Index {
       this.search(this.searchBar.value.trim().toLowerCase())
     })
     this.filter.forEach((filter) => {
-      filter.querySelector('.filter-button').addEventListener('click', () => {
-        if (filter.classList.contains('open')) {
-          filter.classList.remove('open')
-          filter.classList.remove('rounded-top')
-          filter.classList.toggle('rounded')
-          filter
-            .querySelector('.filter-label')
-            .classList.remove('visually-hidden')
-          filter
-            .querySelector('.filter-list')
-            .classList.toggle('visually-hidden')
-          filter
-            .querySelector('.filter-input')
-            .classList.toggle('visually-hidden')
-        } else {
-          filter.classList.toggle('open')
-          filter.classList.remove('rounded')
-          filter.classList.toggle('rounded-top')
-          filter
-            .querySelector('.filter-label')
-            .classList.toggle('visually-hidden')
-          filter
-            .querySelector('.filter-list')
-            .classList.remove('visually-hidden')
-          filter
-            .querySelector('.filter-input')
-            .classList.remove('visually-hidden')
-          filter.querySelector('.filter-input').focus()
-        }
-      })
+      filter
+        .querySelector('.filter-button')
+        .parentElement.addEventListener('click', () => {
+          if (filter.classList.contains('open')) {
+            filter.classList.remove('open')
+            filter.classList.remove('rounded-top')
+            filter.classList.toggle('rounded')
+            filter
+              .querySelector('.filter-label')
+              .classList.remove('visually-hidden')
+            filter
+              .querySelector('.filter-list')
+              .classList.toggle('visually-hidden')
+            filter
+              .querySelector('.filter-input')
+              .classList.toggle('visually-hidden')
+          } else {
+            filter.classList.toggle('open')
+            filter.classList.remove('rounded')
+            filter.classList.toggle('rounded-top')
+            filter
+              .querySelector('.filter-label')
+              .classList.toggle('visually-hidden')
+            filter
+              .querySelector('.filter-list')
+              .classList.remove('visually-hidden')
+            filter
+              .querySelector('.filter-input')
+              .classList.remove('visually-hidden')
+            filter.querySelector('.filter-input').focus()
+          }
+        })
       filter.querySelector('.filter-input').addEventListener('input', () => {
         this.searchInFilter(filter)
       })
@@ -66,7 +73,7 @@ export default class Index {
       this.searchResult = this.filterByTags(result)
     }
     this.getTags()
-    this.displayCards()
+    this.display()
   }
 
   searchByValue(value) {
@@ -151,25 +158,48 @@ export default class Index {
           this.searchResult.forEach((recipe) => {
             recipe.ingredients.forEach((ingredient) => {
               if (
-                !this.filtersTags.ingredients.includes(ingredient.ingredient)
+                !this.filtersTags.ingredients.includes(
+                  ingredient.ingredient.trim().toLowerCase()
+                ) &&
+                !this.selectedTags.ingredients.includes(
+                  ingredient.ingredient.trim().toLowerCase()
+                )
               ) {
-                this.filtersTags.ingredients.push(ingredient.ingredient)
+                this.filtersTags.ingredients.push(
+                  ingredient.ingredient.trim().toLowerCase()
+                )
               }
             })
           })
           break
         case 'appliances':
           this.searchResult.forEach((recipe) => {
-            if (!this.filtersTags.appliances.includes(recipe.appliance)) {
-              this.filtersTags.appliances.push(recipe.appliance)
+            if (
+              !this.filtersTags.appliances.includes(
+                recipe.appliance.trim().toLowerCase()
+              ) &&
+              !this.selectedTags.appliances.includes(
+                recipe.appliance.trim().toLowerCase()
+              )
+            ) {
+              this.filtersTags.appliances.push(
+                recipe.appliance.trim().toLowerCase()
+              )
             }
           })
           break
         case 'utensils':
           this.searchResult.forEach((recipe) => {
             recipe.utensils.forEach((utensil) => {
-              if (!this.filtersTags.utensils.includes(utensil)) {
-                this.filtersTags.utensils.push(utensil)
+              if (
+                !this.filtersTags.utensils.includes(
+                  utensil.trim().toLowerCase()
+                ) &&
+                !this.selectedTags.utensils.includes(
+                  utensil.trim().toLowerCase()
+                )
+              ) {
+                this.filtersTags.utensils.push(utensil.trim().toLowerCase())
               }
             })
           })
@@ -203,11 +233,15 @@ export default class Index {
       this.deleteTag(tag)
     })
     this.tags.appendChild(tag)
+    this.selectedTags[category].push(name)
     this.search(this.searchBar.value.trim().toLowerCase())
   }
 
   deleteTag(tag) {
     this.tags.removeChild(tag)
+    this.selectedTags[tag.getAttribute('data-category')] = this.selectedTags[
+      tag.getAttribute('data-category')
+    ].filter((item) => !item.includes(tag.textContent.trim()))
     this.search(this.searchBar.value.trim().toLowerCase())
   }
 
@@ -222,6 +256,19 @@ export default class Index {
         this.selectTag(filter.id, tag.textContent.trim().toLowerCase())
       })
     })
+  }
+
+  display() {
+    if (this.searchResult.length > 0) {
+      this.displayCards()
+    } else {
+      this.wrapper.innerHTML = `
+        <div class="col">
+          <h2 class="text-center text-muted">Désolé, aucune recette ne correspond à votre recherche !</h2>
+          <p class="text-center text-muted">Vous pouvez réessayer avec d'autres termes, comme "tarte aux pommes", "poisson"...</p>
+        </div>
+      `
+    }
   }
 
   displayCards() {
