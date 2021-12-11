@@ -18,6 +18,7 @@
         "prettier/prettier": "error",
         "import/extensions": [
             "off"
-        ]
+        ],
+        "no-param-reassign": "off"
     }
 }
