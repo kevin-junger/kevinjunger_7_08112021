@@ -8,7 +8,7 @@ Après avoir édité des livres de cuisine pendant plusieurs années, l’entrep
 
 Le gros du travail sera d'implémenter une fonctionnalité de recherche de recettes par mots-clés, avec possibilité de filtrer par ingrédients, appareils et ustensiles, en mettant l'accent sur la performance : les utilisateurs veulent une recherche rapide, presque instantanée.
 
-Pour ce faire, une investigation de fonctionnalité sera menée afin de comparer deux versions de l'algorithme de recherche (déclenché par saisie de l'utilisateur dans la barre de recherche), l'une utilisant les boucles natives JavaScript, l'autre tirant parti des méthodes de l'objet `Array` ; pour en mesurer les performances grâce à une analyse comparitive sur banc d'essai.
+Pour ce faire, une investigation de fonctionnalité sera menée afin de comparer deux versions de l'algorithme de recherche par valeur (déclenché par saisie de l'utilisateur dans la barre de recherche), l'une utilisant les boucles natives JavaScript, l'autre tirant parti des méthodes de l'objet `Array` ; pour en mesurer les performances grâce à une analyse comparitive sur banc d'essai.
 
 ## Éléments fournis
 
@@ -20,7 +20,7 @@ Pour ce faire, une investigation de fonctionnalité sera menée afin de comparer
 
 - **Généralités** : dépôt GitHub, séparation des fichiers HTML, CSS et JavaScript, validation W3C.
 - **Documentation** : réalisation d'une fiche d'investigation de fonctionnalité pour la barre de recherche et d'un _flowchart_.
-- Deux branches pour chaque implémentation de l'algorithme de recherche.
+- Deux branches pour chaque implémentation de l'algorithme de recherche par valeur : `search-v1` pour la variante utilisant les boucles natives, et `search-v2` pour la variante utilisant les méthodes de l'objet `Array`.
 - Le code doit être **commenté** et **testé**.
 
 ## Technologies mises en oeuvre
@@ -30,8 +30,8 @@ Pour ce faire, une investigation de fonctionnalité sera menée afin de comparer
 - Font Awesome (icônes)
 - JavaScript (ES6) avec utilisation de programmation orientée objet
 - JSON pour la "base de données"
-- draw.io pour le _flowchart_
-- JSBench.ch pour l'analyse comparative des algorithmes de recherche
+- [diagrams.net (anciennement draw.io)](https://app.diagrams.net/) pour le _flowchart_
+- [Perflink](https://perf.link/) pour l'analyse comparative des algorithmes de recherche
 
 ## Environnement
 
