@@ -36,11 +36,11 @@ export default class Index {
       this.#search(this.searchBar.value.trim().toLowerCase()) // listens for input in the field
     })
     // filters
-    this.filter.forEach((filter) => {
-      filter
-        .querySelector('.filter-button')
-        .parentElement.addEventListener('click', () => {
-          // allows to open/close each filter
+    document.addEventListener('click', (e) => {
+      // closes any filter if the user clicks outside
+      if (!e.target.closest('.filter')) {
+        // otherwise the filters wouldn't open
+        this.filter.forEach((filter) => {
           if (filter.classList.contains('open')) {
             filter.classList.remove('open')
             filter.classList.remove('rounded-top')
@@ -54,6 +54,33 @@ export default class Index {
             filter
               .querySelector('.filter-input')
               .classList.add('visually-hidden')
+            filter.querySelector('.filter-input').value = ''
+          }
+        })
+      }
+    })
+    this.filter.forEach((filter) => {
+      filter
+        .querySelector('.filter-button')
+        .parentElement.addEventListener('click', (e) => {
+          // allows to open/close each filter
+          if (
+            filter.classList.contains('open') &&
+            !e.target.closest('.filter-input') // prevent the filter to close when the user clicks into the search field
+          ) {
+            filter.classList.remove('open')
+            filter.classList.remove('rounded-top')
+            filter.classList.add('rounded')
+            filter
+              .querySelector('.filter-label')
+              .classList.remove('visually-hidden')
+            filter
+              .querySelector('.filter-list')
+              .classList.add('visually-hidden')
+            filter
+              .querySelector('.filter-input')
+              .classList.add('visually-hidden')
+            filter.querySelector('.filter-input').value = ''
           } else {
             filter.classList.add('open')
             filter.classList.remove('rounded')
