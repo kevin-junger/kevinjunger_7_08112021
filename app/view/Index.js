@@ -99,20 +99,27 @@ export default class Index {
   }
 
   #filterByValue(value) {
-    const result = []
+    /**
+     * creates and returns a new array with results from this.recipes
+     * filtered by the input value on the search bar
+     */
+    const result = [] // new empty array for filtered results
     search_loop: for (let i = 0; i < this.recipes.length; i++) {
+      // for all elements in this.recipes
       if (
+        // if the recipe includes the value in its name OR description OR the appliance used
         this.recipes[i].name.toLowerCase().includes(value) ||
         this.recipes[i].description.toLowerCase().includes(value) ||
         this.recipes[i].appliance.toLowerCase().includes(value)
       ) {
-        result.push(this.recipes[i])
-        continue
+        result.push(this.recipes[i]) // push the recipe into the result array
+        continue // go to next recipe
       }
       for (let y = 0; y < this.recipes[i].utensils.length; y++) {
         if (this.recipes[i].utensils[y].toLowerCase().includes(value)) {
-          result.push(this.recipes[i])
-          continue search_loop
+          // if one of the utensils used in the recipe matches
+          result.push(this.recipes[i]) // push the recipe into the result array
+          continue search_loop // go to next recipe
         }
       }
       for (let x = 0; x < this.recipes[i].ingredients.length; x++) {
@@ -121,8 +128,9 @@ export default class Index {
             .toLowerCase()
             .includes(value)
         ) {
-          result.push(this.recipes[i])
-          continue search_loop
+          // if one of the ingredients used in the recipe matches
+          result.push(this.recipes[i]) // push the recipe into the result array
+          continue search_loop // go to next recipe
         }
       }
     }
