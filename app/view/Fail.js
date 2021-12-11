@@ -1,3 +1,8 @@
+/**
+ * class Fail
+ * called when the Controller catches an error
+ */
+
 export default class Fail {
   constructor(error) {
     this.error = error

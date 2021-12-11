@@ -1,54 +1,66 @@
+/**
+ * class Index
+ * Display the content and handles all the search functions
+ */
+
 export default class Index {
   constructor(data) {
-    this.recipes = data
+    this.recipes = data // data from JSON - should NEVER be modified
+    /* DOM Elements */
     this.searchBar = document.querySelector('.search-input')
     this.searchBtn = document.querySelector('.search-btn')
     this.tags = document.querySelector('.tags')
+    this.filter = document.querySelectorAll('.filter')
+    this.wrapper = document.querySelector('.wrapper')
+    /* --- */
     this.selectedTags = {
+      // stores any new tags selected by the user
       ingredients: [],
       appliances: [],
       utensils: [],
     }
-    this.filter = document.querySelectorAll('.filter')
-    this.wrapper = document.querySelector('.wrapper')
   }
 
   init() {
+    /* Events */
+    // search bar
     this.searchBtn.addEventListener('click', () => {
-      this.search(this.searchBar.value.trim().toLowerCase())
+      this.#search(this.searchBar.value.trim().toLowerCase()) // if the search button is clicked
     })
     this.searchBar.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
-        this.search(this.searchBar.value.trim().toLowerCase())
+        this.#search(this.searchBar.value.trim().toLowerCase()) // if the user presses Enter
       }
     })
     this.searchBar.addEventListener('input', () => {
-      this.search(this.searchBar.value.trim().toLowerCase())
+      this.#search(this.searchBar.value.trim().toLowerCase()) // listens for input in the field
     })
+    // filters
     this.filter.forEach((filter) => {
       filter
         .querySelector('.filter-button')
         .parentElement.addEventListener('click', () => {
+          // allows to open/close each filter
           if (filter.classList.contains('open')) {
             filter.classList.remove('open')
             filter.classList.remove('rounded-top')
-            filter.classList.toggle('rounded')
+            filter.classList.add('rounded')
             filter
               .querySelector('.filter-label')
               .classList.remove('visually-hidden')
             filter
               .querySelector('.filter-list')
-              .classList.toggle('visually-hidden')
+              .classList.add('visually-hidden')
             filter
               .querySelector('.filter-input')
-              .classList.toggle('visually-hidden')
+              .classList.add('visually-hidden')
           } else {
-            filter.classList.toggle('open')
+            filter.classList.add('open')
             filter.classList.remove('rounded')
-            filter.classList.toggle('rounded-top')
+            filter.classList.add('rounded-top')
             filter
               .querySelector('.filter-label')
-              .classList.toggle('visually-hidden')
+              .classList.add('visually-hidden')
             filter
               .querySelector('.filter-list')
               .classList.remove('visually-hidden')
@@ -59,67 +71,89 @@ export default class Index {
           }
         })
       filter.querySelector('.filter-input').addEventListener('input', () => {
-        this.searchInFilter(filter)
+        // allows search for a specific tag in each filter
+        this.#searchInFilter(filter)
       })
     })
-    this.search(this.searchBar.value.trim().toLowerCase())
+    /* --- */
+    this.#search(this.searchBar.value.trim().toLowerCase()) // when page is loaded for the first time or reloaded, displays all recipes
   }
 
-  search(value) {
+  /* Search and filtering-related functions */
+
+  #search(value) {
+    // search by value in the search bar AND/OR by tags
     if (!value || value.length < 3) {
-      this.searchResult = this.filterByTags(this.recipes)
+      // if NO value or value is less than 3 chars (can also mean the user began his research by using tags only)
+      this.searchResult = this.#filterByTags(this.recipes) // checks if tags are selected
     } else {
-      const result = this.searchByValue(value)
-      this.searchResult = this.filterByTags(result)
+      /**
+       * triggered when long-enough input has been done in the search bar
+       * OR when new tags are selected and the input value remains the same and long-enough
+       */
+      const result = this.#filterByValue(value) // filters by input value first
+      this.searchResult = this.#filterByTags(result) // then by tags (if any)
     }
-    this.getTags()
-    this.display()
+    this.#getTags() // refresh the tags list for each search filter
+    this.#display() // displays search result OR an error message if none
   }
 
-  searchByValue(value) {
+  #filterByValue(value) {
+    /**
+     * creates and returns a new array with results from this.recipes
+     * filtered by the input value on the search bar
+     */
     const result = this.recipes.filter(
       (recipe) =>
-        recipe.name.toLowerCase().includes(value) ||
-        recipe.description.toLowerCase().includes(value) ||
-        recipe.appliance.toLowerCase().includes(value) ||
-        recipe.utensils.find((utensil) =>
-          utensil.toLowerCase().includes(value)
+        recipe.name.toLowerCase().includes(value) || // the recipe's names includes the value
+        recipe.description.toLowerCase().includes(value) || // OR the recipe's description
+        recipe.appliance.toLowerCase().includes(value) || // OR the appliance needed for the recipe
+        recipe.utensils.find(
+          (utensil) => utensil.toLowerCase().includes(value) // OR any utensil
         ) ||
-        recipe.ingredients.find((ingredient) =>
-          ingredient.ingredient.toLowerCase().includes(value)
+        recipe.ingredients.find(
+          (ingredient) => ingredient.ingredient.toLowerCase().includes(value) // OR any ingredient
         )
     )
     return result
   }
 
-  filterByTags(recipes) {
-    const tags = this.tags.querySelectorAll('.tag')
+  #filterByTags(recipes) {
+    /**
+     * creates and returns a new array with results either filtered from this.recipes
+     * (if no input from the user in the search bar) or the filtered results from #filterByValue()
+     */
+    const tags = this.tags.querySelectorAll('.tag') // selects any tag added in the DOM
     let result = recipes
     if (tags.length !== 0) {
+      // if there's at least ONE tag in the DOM
       tags.forEach((tag) => {
         switch (tag.getAttribute('data-category')) {
-          case 'ingredients':
+          case 'ingredients': // filter by ingredients
             result = result.filter((recipe) =>
-              recipe.ingredients.find((ingredient) =>
-                ingredient.ingredient
-                  .toLowerCase()
-                  .includes(tag.textContent.trim().toLowerCase())
+              recipe.ingredients.find(
+                (ingredient) =>
+                  ingredient.ingredient
+                    .toLowerCase()
+                    .includes(tag.textContent.trim().toLowerCase()) // keep the recipe if at one of the ingredients matches
               )
             )
             break
-          case 'appliances':
-            result = result.filter((recipe) =>
-              recipe.appliance
-                .toLowerCase()
-                .includes(tag.textContent.trim().toLowerCase())
+          case 'appliances': // filter by appliance
+            result = result.filter(
+              (recipe) =>
+                recipe.appliance
+                  .toLowerCase()
+                  .includes(tag.textContent.trim().toLowerCase()) // keep the recipe if the appliance used matches
             )
             break
-          case 'utensils':
+          case 'utensils': // filter by utensils
             result = result.filter((recipe) =>
-              recipe.utensils.find((utensil) =>
-                utensil
-                  .toLowerCase()
-                  .includes(tag.textContent.trim().toLowerCase())
+              recipe.utensils.find(
+                (utensil) =>
+                  utensil
+                    .toLowerCase()
+                    .includes(tag.textContent.trim().toLowerCase()) // keep the recipe if at one of the ustensils used matches
               )
             )
             break
@@ -131,10 +165,13 @@ export default class Index {
     return result
   }
 
-  searchInFilter(filter) {
+  #searchInFilter(filter) {
+    // allows the user to search for a specific tag by input in the search field in each filter
     if (!filter.querySelector('.filter-input').value.trim().toLowerCase()) {
-      this.displayFilterList(this.filtersTags[filter.id], filter)
+      // if no input
+      this.#displayFilterList(this.filtersTags[filter.id], filter) // displays all tags for that specific filter
     } else {
+      // if input
       const result = this.filtersTags[filter.id].filter((item) =>
         item
           .toLowerCase()
@@ -142,16 +179,27 @@ export default class Index {
             filter.querySelector('.filter-input').value.trim().toLowerCase()
           )
       )
-      this.displayFilterList(result, filter)
+      this.#displayFilterList(result, filter) // displays the filtered tags
     }
   }
 
-  getTags() {
+  /* --- */
+
+  /* Tags-related functions */
+
+  #getTags() {
+    // gets and stores the tags needed for the filters when the user makes a research
     this.filtersTags = {
+      // the array where all the tags lists are stored before being displayed - rebuilt whenever a new research is made
       ingredients: [],
       appliances: [],
       utensils: [],
     }
+    /**
+     * for each filter (or category : ingredients, appliances and utensils),
+     * parses each recipes and stores each ingredient, appliance or utensils, while making sure
+     * it hasn't been stored before (avoids duplicates) and it doesn't correspond to a tag selected previously by the user
+     */
     this.filter.forEach((filter) => {
       switch (filter.id) {
         case 'ingredients':
@@ -207,11 +255,16 @@ export default class Index {
         default:
           break
       }
-      this.displayFilterList(this.filtersTags[filter.id], filter)
+      this.#displayFilterList(this.filtersTags[filter.id], filter)
     })
   }
 
-  selectTag(category, name) {
+  #selectTag(category, name) {
+    /**
+     * when the user clicks on any tag displayed in any filter, it adds it to the DOM,
+     * pushes the corresponding data in the this.selectedTags array and initiates a new research
+     */
+    /* creation of the DOM element */
     const tag = document.createElement('div')
     tag.setAttribute('data-category', category)
     tag.className = 'tag col-auto p-2 mt-2 me-3 text-white rounded'
@@ -229,38 +282,54 @@ export default class Index {
       default:
         break
     }
+    /* --- */
     tag.querySelector('button').addEventListener('click', () => {
-      this.deleteTag(tag)
+      // event triggered when the user clicks on the (x) button in the tag
+      this.#deleteTag(tag)
     })
-    this.tags.appendChild(tag)
+    this.tags.appendChild(tag) // adds the tag to the DOM
     this.selectedTags[category].push(name)
-    this.search(this.searchBar.value.trim().toLowerCase())
+    this.#search(this.searchBar.value.trim().toLowerCase())
   }
 
-  deleteTag(tag) {
+  #deleteTag(tag) {
+    /**
+     * triggered when the user clicks on the (x) button in any tag
+     * removes it from the DOM, deletes its entry in the this.selectedTags() array, and initiates a new research
+     */
     this.tags.removeChild(tag)
     this.selectedTags[tag.getAttribute('data-category')] = this.selectedTags[
       tag.getAttribute('data-category')
     ].filter((item) => !item.includes(tag.textContent.trim()))
-    this.search(this.searchBar.value.trim().toLowerCase())
+    this.#search(this.searchBar.value.trim().toLowerCase())
   }
 
-  displayFilterList(tags, filter) {
+  /* --- */
+
+  /* Display-related functions */
+
+  #displayFilterList(tags, filter) {
+    // adds tags list to filter
     const list = filter.querySelector('ul')
     list.innerHTML = `${tags
       .slice(0, 30)
       .map((element) => `<li>${element.toLowerCase()}</li>`)
       .join('')}`
     list.querySelectorAll('li').forEach((tag) => {
+      // event triggered when user clicks on any tag in the filter
       tag.addEventListener('click', () => {
-        this.selectTag(filter.id, tag.textContent.trim().toLowerCase())
+        this.#selectTag(filter.id, tag.textContent.trim().toLowerCase())
       })
     })
   }
 
-  display() {
+  #display() {
+    /**
+     * if this.searchResult contains at least one entry, displays the recipe(s)
+     * else, displays an error message
+     */
     if (this.searchResult.length > 0) {
-      this.displayCards()
+      this.#displayCards()
     } else {
       this.wrapper.innerHTML = `
         <div class="col">
@@ -271,7 +340,10 @@ export default class Index {
     }
   }
 
-  displayCards() {
+  #displayCards() {
+    /**
+     * for each entry in this.searchResult, creates and adds a new recipe card to the DOM
+     */
     this.wrapper.innerHTML = ''
     this.searchResult.forEach((recipe) => {
       const card = `
