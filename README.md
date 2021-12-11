@@ -30,8 +30,8 @@ Pour ce faire, une investigation de fonctionnalité sera menée afin de comparer
 - Font Awesome (icônes)
 - JavaScript (ES6) avec utilisation de programmation orientée objet
 - JSON pour la "base de données"
-- draw.io pour le _flowchart_
-- JSBench.ch pour l'analyse comparative des algorithmes de recherche
+- [diagrams.net (anciennement draw.io)](https://app.diagrams.net/) pour le _flowchart_
+- [Perflink](https://perf.link/) pour l'analyse comparative des algorithmes de recherche
 
 ## Environnement
 
