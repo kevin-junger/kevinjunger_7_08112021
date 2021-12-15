@@ -20,7 +20,7 @@ Pour ce faire, une investigation de fonctionnalité sera menée afin de comparer
 
 - **Généralités** : dépôt GitHub, séparation des fichiers HTML, CSS et JavaScript, validation W3C.
 - **Documentation** : réalisation d'une fiche d'investigation de fonctionnalité pour la barre de recherche et d'un _flowchart_.
-- Deux branches pour chaque implémentation de l'algorithme de recherche par valeur : `search-v1` pour la variante utilisant les boucles natives, et `search-v2` pour la variante utilisant les méthodes de l'objet `Array`.
+- Deux branches pour chaque implémentation de l'algorithme de recherche par valeur : `main` pour la variante utilisant les boucles natives, et `native` pour la variante utilisant les méthodes de l'objet `Array`.
 - Le code doit être **commenté** et **testé**.
 
 ## Technologies mises en oeuvre
